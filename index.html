@@ -5,75 +5,242 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عيادة الدكتور - نظام إدارة المرضى</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #a4c2e6; margin: 20px; color: #333; }
-        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 950px; margin: auto; }
-        .header { text-align: center; color: #003366; font-weight: bold; margin-bottom: 25px; border-bottom: 2px solid #003366; padding-bottom: 10px; }
+        :root {
+            --primary-color: #003366;
+            --primary-hover: #002244;
+            --bg-color: #a4c2e6;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --danger-color: #cc0000;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --edit-color: #17a2b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            padding: 10px;
+            color: var(--text-color);
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 850px;
+            margin: 10px auto;
+        }
+
+        .header {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+        }
+
+        .header h2 { font-size: 1.4rem; margin-bottom: 5px; }
+        .header h3 { font-size: 1.1rem; color: #555; }
         
-        .section-title { background: #003366; color: white; padding: 8px 15px; margin-top: 20px; margin-bottom: 15px; border-radius: 4px; }
+        .backup-section {
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+        .backup-section span { font-weight: bold; color: #856404; font-size: 0.9rem; }
+        .backup-btns { display: flex; gap: 8px; justify-content: center; width: 100%; }
+
+        .section-title {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 12px;
+            margin: 20px 0 12px 0;
+            border-radius: 4px;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         
-        .form-group { display: flex; margin-bottom: 12px; align-items: center; }
-        .form-group label { width: 140px; font-weight: bold; color: #003366; }
-        .form-group input, .form-group textarea, .form-group select { flex: 1; padding: 8px; border: 1px solid #aaa; border-radius: 4px; font-size: 14px; }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 12px;
+            gap: 5px;
+        }
+        .form-group label {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fafafa;
+        }
         
-        .btn { background-color: #003366; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
-        .btn:hover { background-color: #002244; }
-        .btn-danger { background-color: #cc0000; }
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn-danger { background-color: var(--danger-color); }
+        .btn-success { background-color: var(--success-color); }
+        .btn-warning { background-color: var(--warning-color); color: #212529; }
+        .btn-edit { background-color: var(--edit-color); color: white; }
+        .btn-sm { padding: 5px 10px; font-size: 0.85rem; }
         
-        .search-box { background: #e6f2ff; padding: 15px; border-radius: 5px; margin-bottom: 25px; border: 1px solid #b3d7ff; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; }
-        table, th, td { border: 1px solid #aaa; text-align: center; padding: 10px; }
-        th { background-color: #f2f2f2; color: #003366; }
+        .search-box {
+            background: #e6f2ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #b3d7ff;
+        }
+        .search-controls { display: flex; flex-direction: column; gap: 8px; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: #fff;
+        }
+        table, th, td { border: 1px solid #aaa; padding: 10px; text-align: center; }
+        th { background-color: #f2f2f2; color: var(--primary-color); }
         
         .hidden { display: none; }
-        .patient-card { background: #f9f9f9; padding: 15px; border-radius: 4px; border-right: 5px solid #003366; margin-bottom: 20px; }
+        .patient-card { background: #f9f9f9; padding: 15px; border-radius: 6px; border-right: 5px solid var(--primary-color); margin-bottom: 15px; font-size: 0.95rem; line-height: 1.5; }
+
+        /* تكييف الشاشات للكمبيوتر */
+        @media (min-width: 600px) {
+            body { padding: 20px; }
+            .container { padding: 25px; }
+            .header h2 { font-size: 1.8rem; }
+            .backup-section { flex-direction: row; justify-content: space-between; text-align: right; }
+            .backup-btns { width: auto; }
+            .form-group { flex-direction: row; align-items: center; }
+            .form-group label { width: 140px; min-width: 140px; }
+            .search-controls { flex-direction: row; }
+            .search-controls input { flex: 1; }
+        }
+
+        /* تحويل الجداول لكروت للموبايل */
+        @media (max-width: 599px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { position: absolute; top: -9999px; left: -9999px; }
+            tr { border: 1px solid #ccc; margin-bottom: 10px; border-radius: 6px; padding: 5px; background: #fff; }
+            td { border: none; border-bottom: 1px solid #eee; position: relative; padding-right: 45%; text-align: left; padding-left: 10px; min-height: 40px; }
+            td:before { position: absolute; right: 10px; top: 10px; width: 40%; font-weight: bold; color: var(--primary-color); text-align: right; }
+            
+            #searchResults td:nth-of-type(1):before { content: "الاسم:"; }
+            #searchResults td:nth-of-type(2):before { content: "الهاتف:"; }
+            #searchResults td:nth-of-type(3):before { content: "الإجراء:"; }
+
+            #visitsTableBody td:nth-of-type(1):before { content: "التاريخ:"; }
+            #visitsTableBody td:nth-of-type(2):before { content: "التشخيص:"; }
+            #visitsTableBody td:nth-of-type(3):before { content: "الأدوية:"; }
+            #visitsTableBody td:nth-of-type(4):before { content: "التحكم:"; }
+            
+            td:last-child { border-bottom: none; }
+            td button { width: 100%; margin-top: 5px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h2>عيادة د. أشرف عدنان المسمار</h2>
-        <h3>جراحة عظم - أعصاب</h3>
+        <h2>عيادة الدكتور / جراحة عظم وأعصاب</h2>
+        <h3>نظام إدارة ملفات المرضى الإلكتروني</h3>
+    </div>
+
+    <div class="backup-section">
+        <span>⚙️ أدوات قاعدة البيانات:</span>
+        <div class="backup-btns">
+            <button class="btn btn-success btn-sm" onclick="backupDatabase()">💾 تصدير (Backup)</button>
+            <button class="btn btn-warning btn-sm" onclick="document.getElementById('fileInput').click()">📂 استعادة (Restore)</button>
+            <input type="file" id="fileInput" class="hidden" accept=".json" onchange="restoreDatabase(event)">
+        </div>
     </div>
 
     <div class="search-box">
-        <h3 style="margin-top: 0; color: #003366;">🔍 البحث عن مريض سابق</h3>
-        <div style="display: flex; gap: 10px;">
-            <input type="text" id="searchInput" placeholder="أدخل اسم المريض أو رقم الهاتف للبحث..." style="flex: 1; padding: 8px;">
+        <h3 style="margin-bottom: 10px; color: var(--primary-color); font-size: 1.1rem;">🔍 البحث عن مريض سابق</h3>
+        <div class="search-controls">
+            <input type="text" id="searchInput" placeholder="أدخل اسم المريض أو رقم الهاتف...">
             <button class="btn" onclick="searchPatient()">بحث</button>
-            <button class="btn btn-danger" onclick="resetView()">إلغاء / مريض جديد</button>
+            <button class="btn btn-danger" onclick="resetView()">مريض جديد</button>
         </div>
         <div id="searchResults"></div>
     </div>
 
     <div id="patientProfileSection" class="hidden">
-        <div class="section-title">ذاتية المريض الحالي</div>
+        <div class="section-title">
+            <span>ذاتية المريض الحالي</span>
+            <button class="btn btn-edit btn-sm" id="editPatientBtn" onclick="toggleEditPatient()">✏️ تعديل بيانات المريض</button>
+        </div>
+        
         <div class="patient-card" id="patientDetailsCard"></div>
+        
+        <div id="editPatientForm" class="hidden" style="background:#eef7f9; padding:15px; border-radius:6px; margin-bottom:15px; border:1px solid #bee5eb;">
+            <div class="form-group"><label>الاسم الحالي:</label><input type="text" id="editPName"></div>
+            <div class="form-group"><label>تاريخ الولادة:</label><input type="date" id="editPDob"></div>
+            <div class="form-group">
+                <label>الجنس:</label>
+                <select id="editPGender"><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select>
+            </div>
+            <div class="form-group"><label>العنوان:</label><input type="text" id="editPAddress"></div>
+            <div class="form-group"><label>الهاتف:</label><input type="text" id="editPPhone"></div>
+            <div class="form-group"><label>السوابق الطبية:</label><textarea id="editPHistory" rows="2"></textarea></div>
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="btn btn-success btn-sm" onclick="savePatientEdits()">حفظ التعديلات</button>
+                <button class="btn btn-danger btn-sm" onclick="toggleEditPatient()">إلغاء</button>
+            </div>
+        </div>
 
         <div class="section-title">خلاصة الزيارات السابقة</div>
         <table id="visitsTable">
             <thead>
                 <tr>
                     <th style="width: 20%;">التاريخ</th>
-                    <th style="width: 40%;">التشخيص</th>
-                    <th style="width: 40%;">الأدوية</th>
+                    <th style="width: 35%;">التشخيص</th>
+                    <th style="width: 35%;">الأدوية</th>
+                    <th style="width: 10%;">التحكم</th>
                 </tr>
             </thead>
-            <tbody id="visitsTableBody">
-                </tbody>
+            <tbody id="visitsTableBody"></tbody>
         </table>
 
         <div class="section-title">إضافة زيارة جديدة لهذا المريض</div>
         <div class="form-group">
             <label>التشخيص الجديد:</label>
-            <textarea id="newDiagnosis" rows="2"></textarea>
+            <textarea id="newDiagnosis" rows="3"></textarea>
         </div>
         <div class="form-group">
             <label>الأدوية:</label>
-            <textarea id="newMedications" rows="2"></textarea>
+            <textarea id="newMedications" rows="3"></textarea>
         </div>
-        <button class="btn" onclick="addNewVisit()">حفظ الزيارة الجديدة</button>
+        <button class="btn" style="width:100%;" onclick="addNewVisit()">حفظ الزيارة الجديدة</button>
     </div>
 
     <div id="newPatientSection">
@@ -97,26 +264,52 @@
 </div>
 
 <script>
-    // جلب قاعدة البيانات من المتصفح أو إنشاء واحدة فارغة إن لم تكن موجودة
     let patientsDatabase = JSON.parse(localStorage.getItem('clinic_db')) || [];
     let currentPatientId = null;
 
-    // دالة لحفظ مريض جديد وزيارته الأولى
+    // وظائف النسخ الاحتياطي والاستعادة
+    function backupDatabase() {
+        if (patientsDatabase.length === 0) { alert('قاعدة البيانات فارغة حالياً.'); return; }
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(patientsDatabase, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `clinic_backup_${new Date().toISOString().slice(0,10)}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    }
+
+    function restoreDatabase(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const importedData = JSON.parse(e.target.result);
+                if (Array.isArray(importedData)) {
+                    if (confirm('هل تريد دمج النسخة الاحتياطية مع البيانات الحالية؟')) {
+                        const existingIds = new Set(patientsDatabase.map(p => p.id));
+                        importedData.forEach(p => { if (!existingIds.has(p.id)) patientsDatabase.push(p); });
+                        localStorage.setItem('clinic_db', JSON.stringify(patientsDatabase));
+                        alert('تمت استعادة البيانات بنجاح!');
+                        resetView();
+                    }
+                } else { alert('ملف غير صالح.'); }
+            } catch (err) { alert('خطأ في قراءة الملف.'); }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+    }
+
+    // حفظ مريض جديد وزيارة أولى
     function saveNewPatient() {
         const name = document.getElementById('pName').value.trim();
         const phone = document.getElementById('pPhone').value.trim();
-        
-        if (!name) {
-            alert('الرجاء إدخال اسم المريض على الأقل.');
-            return;
-        }
+        if (!name) { alert('الرجاء إدخال اسم المريض.'); return; }
 
-        // الحصول على تاريخ ووقت الزيارة الحالية
         const currentDateTime = new Date().toLocaleString('ar-EG', { hour12: true });
-
-        // بناء كائن المريض الجديد مع مصفوفة الزيارات
         const newPatient = {
-            id: Date.now(), // معرف فريد باستخدام الوقت الحالي بالملي ثانية
+            id: Date.now(),
             name: name,
             dob: document.getElementById('pDob').value,
             gender: document.getElementById('pGender').value,
@@ -126,139 +319,183 @@
             visits: []
         };
 
-        // إذا تم ملء حقول الزيارة الأولى، يتم إضافتها للمريض
         const diag = document.getElementById('pDiagnosis').value.trim();
         const med = document.getElementById('pMedications').value.trim();
-        if (diag || med) {
-            newPatient.visits.push({
-                date: currentDateTime,
-                diagnosis: diag,
-                medications: med
-            });
+        if (diag || med) { 
+            newPatient.visits.push({ id: Date.now() + 1, date: currentDateTime, diagnosis: diag, medications: med }); 
         }
 
-        // حفظ المريض في قاعدة البيانات المحلية المتصفح
         patientsDatabase.push(newPatient);
         localStorage.setItem('clinic_db', JSON.stringify(patientsDatabase));
-
-        alert('تم حفظ المريض بنجاح في ذاكرة المتصفح!');
-        
-        // فتح ملف المريض المحفوظ فوراً
+        alert('تم الحفظ بنجاح!');
         openPatientProfile(newPatient.id);
         clearNewPatientForm();
     }
 
-    // دالة البحث عن مريض
+    // البحث
     function searchPatient() {
         const query = document.getElementById('searchInput').value.trim().toLowerCase();
         const resultsDiv = document.getElementById('searchResults');
         resultsDiv.innerHTML = '';
+        if (!query) { alert('الرجاء كتابة نص للبحث.'); return; }
 
-        if (!query) {
-            alert('الرجاء كتابة نص للبحث.');
-            return;
-        }
+        const filtered = patientsDatabase.filter(p => p.name.toLowerCase().includes(query) || p.phone.includes(query));
+        if (filtered.length === 0) { resultsDiv.innerHTML = '<p style="color:red; margin-top:10px;">لا توجد نتائج.</p>'; return; }
 
-        // تصفية المرضى بناء على الاسم أو الهاتف
-        const filtered = patientsDatabase.filter(p => 
-            p.name.toLowerCase().includes(query) || p.phone.includes(query)
-        );
-
-        if (filtered.length === 0) {
-            resultsDiv.innerHTML = '<p style="color:red; margin-top:10px;">لم يتم العثور على مريض بهذا الاسم أو الرقم.</p>';
-            return;
-        }
-
-        // عرض نتائج البحث في جدول صغير
-        let tableHtml = `<table>
-            <tr><th>الاسم</th><th>الهاتف</th><th>الإجراء</th></tr>`;
+        let tableHtml = `<table><thead><tr><th>الاسم</th><th>الهاتف</th><th>الإجراء</th></tr></thead><tbody>`;
         filtered.forEach(p => {
-            tableHtml += `<tr>
-                <td>${p.name}</td>
-                <td>${p.phone}</td>
-                <td><button class="btn" style="padding:4px 10px; font-size:12px;" onclick="openPatientProfile(${p.id})">فتح الملف</button></td>
-            </tr>`;
+            tableHtml += `<tr><td>${p.name}</td><td>${p.phone || '-'}</td><td><button class="btn btn-sm" onclick="openPatientProfile(${p.id})">فتح الملف</button></td></tr>`;
         });
-        tableHtml += `</table>`;
+        tableHtml += `</tbody></table>`;
         resultsDiv.innerHTML = tableHtml;
     }
 
-    // دالة فتح واستعراض ملف مريض محدد بجميع زياراته
+    // فتح ملف المريض
     function openPatientProfile(patientId) {
         currentPatientId = patientId;
         const patient = patientsDatabase.find(p => p.id === patientId);
-
         if (!patient) return;
 
-        // إخفاء نموذج "مريض جديد" وإظهار شاشة "ملف المريض"
         document.getElementById('newPatientSection').classList.add('hidden');
         document.getElementById('patientProfileSection').classList.remove('hidden');
+        document.getElementById('editPatientForm').classList.add('hidden'); // إخفاء فور التغيير لضمان النظافة
 
-        // عرض تفاصيل الذاتية للمريض
         document.getElementById('patientDetailsCard').innerHTML = `
-            <p><strong>الاسم الحركي/الكامل:</strong> ${patient.name} &nbsp;|&nbsp; <strong>تاريخ الولادة:</strong> ${patient.dob || 'غير مدخل'} &nbsp;|&nbsp; <strong>الجنس:</strong> ${patient.gender}</p>
-            <p><strong>الهاتف:</strong> ${patient.phone || 'غير مدخل'} &nbsp;|&nbsp; <strong>العنوان:</strong> ${patient.address || 'غير مدخل'}</p>
-            <p><strong>السوابق المرضية والشخصية:</strong> ${patient.history || 'لا يوجد'}</p>
+            <p><strong>الاسم:</strong> ${patient.name}</p>
+            <p><strong>التاريخ والنوع:</strong> ${patient.dob || 'غير مدخل'} (${patient.gender})</p>
+            <p><strong>الهاتف:</strong> ${patient.phone || 'غير مدخل'} | <strong>العنوان:</strong> ${patient.address || 'غير مدخل'}</p>
+            <p><strong>السوابق:</strong> ${patient.history || 'لا يوجد'}</p>
         `;
-
-        // تحديث جدول الزيارات السابقة
         renderVisitsTable(patient.visits);
     }
 
-    // دالة لتحديث جدول الزيارات السابقة على الشاشة
+    // تفعيل/إخفاء واجهة تعديل المريض
+    function toggleEditPatient() {
+        const form = document.getElementById('editPatientForm');
+        if (form.classList.contains('hidden')) {
+            const patient = patientsDatabase.find(p => p.id === currentPatientId);
+            if (!patient) return;
+            
+            // تعبئة البيانات الحالية داخل مربعات النص للتعديل
+            document.getElementById('editPName').value = patient.name;
+            document.getElementById('editPDob').value = patient.dob;
+            document.getElementById('editPGender').value = patient.gender;
+            document.getElementById('editPAddress').value = patient.address;
+            document.getElementById('editPPhone').value = patient.phone;
+            document.getElementById('editPHistory').value = patient.history;
+            
+            form.classList.remove('hidden');
+        } else {
+            form.classList.add('hidden');
+        }
+    }
+
+    // حفظ تعديلات المريض الشخصية
+    function savePatientEdits() {
+        const patientIndex = patientsDatabase.findIndex(p => p.id === currentPatientId);
+        if (patientIndex === -1) return;
+
+        const updatedName = document.getElementById('editPName').value.trim();
+        if (!updatedName) { alert('الاسم لا يمكن أن يكون فارغاً.'); return; }
+
+        // تطبيق التحديثات
+        patientsDatabase[patientIndex].name = updatedName;
+        patientsDatabase[patientIndex].dob = document.getElementById('editPDob').value;
+        patientsDatabase[patientIndex].gender = document.getElementById('editPGender').value;
+        patientsDatabase[patientIndex].address = document.getElementById('editPAddress').value;
+        patientsDatabase[patientIndex].phone = document.getElementById('editPPhone').value;
+        patientsDatabase[patientIndex].history = document.getElementById('editPHistory').value;
+
+        localStorage.setItem('clinic_db', JSON.stringify(patientsDatabase));
+        alert('تمت تحديث بيانات المريض بنجاح!');
+        
+        // تحديث العرض
+        openPatientProfile(currentPatientId);
+    }
+
+    // رسم جدول الزيارات
     function renderVisitsTable(visits) {
         const tbody = document.getElementById('visitsTableBody');
         tbody.innerHTML = '';
-
-        if (visits.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" style="color:gray;">لا توجد زيارات مسجلة مسبقاً لهذا المريض.</td></tr>`;
-            return;
-        }
-
-        visits.forEach(v => {
-            const row = `<tr>
+        if (visits.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="color:gray;">لا توجد زيارات سابقة.</td></tr>`; return; }
+        
+        visits.forEach((v, index) => {
+            tbody.innerHTML += `
+            <tr id="visit-row-${v.id}">
                 <td>${v.date}</td>
-                <td style="text-align:right;">${v.diagnosis.replace(/\n/g, '<br>')}</td>
-                <td style="text-align:right;">${v.medications.replace(/\n/g, '<br>')}</td>
+                <td style="text-align:right;" id="visit-diag-${v.id}">${v.diagnosis.replace(/\n/g, '<br>')}</td>
+                <td style="text-align:right;" id="visit-med-${v.id}">${v.medications.replace(/\n/g, '<br>')}</td>
+                <td>
+                    <button class="btn btn-edit btn-sm" onclick="inlineEditVisit(${v.id})">✏️ تعديل</button>
+                </td>
             </tr>`;
-            tbody.innerHTML += row;
         });
     }
 
-    // دالة إضافة زيارة جديدة للمريض المفتوح حالياً
+    // تعديل زيارة معينة في نفس السطر (Inline Edit)
+    function inlineEditVisit(visitId) {
+        const patient = patientsDatabase.find(p => p.id === currentPatientId);
+        const visit = patient.visits.find(v => v.id === visitId);
+        if (!visit) return;
+
+        const row = document.getElementById(`visit-row-${visitId}`);
+        
+        // استبدال نصوص الجدول بمربعات إدخال نصية لتعديلها فوراً
+        row.innerHTML = `
+            <td>${visit.date} (تعديل)</td>
+            <td><textarea id="inline-diag-${visitId}" style="width:100%;" rows="2">${visit.diagnosis}</textarea></td>
+            <td><textarea id="inline-med-${visitId}" style="width:100%;" rows="2">${visit.medications}</textarea></td>
+            <td>
+                <button class="btn btn-success btn-sm" style="margin-bottom:4px;" onclick="saveInlineVisitEdit(${visitId})">حفظ</button>
+                <button class="btn btn-danger btn-sm" onclick="openPatientProfile(${currentPatientId})">إلغاء</button>
+            </td>
+        `;
+    }
+
+    // حفظ تعديل الزيارة المحددة
+    function saveInlineVisitEdit(visitId) {
+        const patientIndex = patientsDatabase.findIndex(p => p.id === currentPatientId);
+        const visitIndex = patientsDatabase[patientIndex].visits.findIndex(v => v.id === visitId);
+        
+        const updatedDiag = document.getElementById(`inline-diag-${visitId}`).value.trim();
+        const updatedMed = document.getElementById(`inline-med-${visitId}`).value.trim();
+
+        if (!updatedDiag && !updatedMed) { alert('لا يمكن ترك التشخيص والأدوية فارغين معاً.'); return; }
+
+        // تحديث القيم
+        patientsDatabase[patientIndex].visits[visitIndex].diagnosis = updatedDiag;
+        patientsDatabase[patientIndex].visits[visitIndex].medications = updatedMed;
+
+        localStorage.setItem('clinic_db', JSON.stringify(patientsDatabase));
+        alert('تم تعديل بيانات الزيارة بنجاح!');
+        
+        // إعادة تحميل الملف وعرض الجدول الجديد
+        openPatientProfile(currentPatientId);
+    }
+
+    // إضافة زيارة جديدة
     function addNewVisit() {
         const diag = document.getElementById('newDiagnosis').value.trim();
         const med = document.getElementById('newMedications').value.trim();
-
-        if (!diag && !med) {
-            alert('الرجاء إدخال التشخيص أو الأدوية لحفظ الزيارة.');
-            return;
-        }
+        if (!diag && !med) { alert('الرجاء إدخال بيانات الزيارة.'); return; }
 
         const patientIndex = patientsDatabase.findIndex(p => p.id === currentPatientId);
         if (patientIndex === -1) return;
 
-        const currentDateTime = new Date().toLocaleString('ar-EG', { hour12: true });
-
-        // إضافة الزيارة الجديدة لمصفوفة زيارات المريض
         patientsDatabase[patientIndex].visits.push({
-            date: currentDateTime,
+            id: Date.now(), // رقم فريد للزيارة الجديدة ليتم التعرف عليها عند التعديل
+            date: new Date().toLocaleString('ar-EG', { hour12: true }),
             diagnosis: diag,
             medications: med
         });
 
-        // حفظ التحديثات في التخزين المحلي للمتصفح
         localStorage.setItem('clinic_db', JSON.stringify(patientsDatabase));
-
         alert('تم حفظ الزيارة الجديدة بنجاح!');
-
-        // إعادة تصفح الملف لتحديث الجدول وتفريغ الخانات للزيارة القادمة
         renderVisitsTable(patientsDatabase[patientIndex].visits);
         document.getElementById('newDiagnosis').value = '';
         document.getElementById('newMedications').value = '';
     }
 
-    // دالة لإعادة الشاشة للوضع الافتراضي (مريض جديد) عند الإلغاء
     function resetView() {
         currentPatientId = null;
         document.getElementById('searchInput').value = '';
@@ -267,17 +504,12 @@
         document.getElementById('patientProfileSection').classList.add('hidden');
     }
 
-    // تفريغ خانات المريض الجديد
     function clearNewPatientForm() {
-        document.getElementById('pName').value = '';
-        document.getElementById('pDob').value = '';
-        document.getElementById('pAddress').value = '';
-        document.getElementById('pPhone').value = '';
-        document.getElementById('pHistory').value = '';
-        document.getElementById('pDiagnosis').value = '';
+        document.getElementById('pName').value = ''; document.getElementById('pDob').value = '';
+        document.getElementById('pAddress').value = ''; document.getElementById('pPhone').value = '';
+        document.getElementById('pHistory').value = ''; document.getElementById('pDiagnosis').value = '';
         document.getElementById('pMedications').value = '';
     }
 </script>
-
 </body>
 </html>
