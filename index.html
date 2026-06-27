@@ -13,6 +13,29 @@
 <link class="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
 <link class="apple-touch-icon" href="icon-192.png">
+
+<style>
+/* Android-like feel */
+body { overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+button:active { transform: scale(0.97); }
+header { padding-top: env(safe-area-inset-top); }
+main { padding-bottom: 80px; }
+.android-bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 64px; background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  display: flex; justify-content: space-around; align-items: center;
+  z-index: 50;
+}
+.android-bottom-bar button {
+  flex: 1; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  font-size: 12px; color: #374151;
+}
+.android-bottom-bar button.active { color: #2563eb; font-weight: 600; }
+</style>
+
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
@@ -969,5 +992,13 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
 </script>
+
+<div class="android-bottom-bar">
+  <button onclick="switchTab('patients-tab')" class="active">Patients</button>
+  <button onclick="switchTab('adv-search-tab')">Search</button>
+  <button onclick="switchTab('payments-tab')">Payments</button>
+  <button onclick="switchTab('backup-tab')">Backup</button>
+</div>
+
 </body>
 </html>
