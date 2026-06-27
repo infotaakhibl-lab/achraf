@@ -10,9 +10,9 @@
         .tab-content.active { display: block; }
     </style>
 
-<link rel="manifest" href="manifest.json">
+<link class="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link class="apple-touch-icon" href="icon-192.png">
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans">
 
@@ -30,14 +30,13 @@
 
     <main class="max-w-7xl mx-auto p-4 sm:p-6">
         
-        <!-- PATIENTS TAB -->
         <section id="patients-tab" class="tab-content active space-y-4">
             <div class="flex flex-wrap items-center gap-4 px-1 text-sm text-gray-500">
                 <div class="flex items-center gap-1.5 bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium border border-blue-100">
-                    <span>👥</span> Total Patients: <strong id="stat-total-patients" class="font-bold">0</strong>
+                    <span>👥</span> Patients: <strong id="stat-total-patients" class="font-bold">0</strong>
                 </div>
                 <div class="flex items-center gap-1.5 bg-green-50 text-green-700 px-3 py-1 rounded-full font-medium border border-green-100">
-                    <span>📅</span> Total Visits: <strong id="stat-total-visits" class="font-bold">0</strong>
+                    <span>📅</span> Visits: <strong id="stat-total-visits" class="font-bold">0</strong>
                 </div>
             </div>
 
@@ -60,7 +59,6 @@
             </div>
         </section>
 
-        <!-- PAYMENTS TAB -->
         <section id="payments-tab" class="tab-content space-y-6">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <h2 id="payment-form-title" class="text-xl font-bold mb-4 text-gray-700">Record a Payment</h2>
@@ -70,11 +68,10 @@
                         <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Month</label>
                         <input type="month" id="pay-date" required class="w-full p-2 border border-gray-300 rounded-lg text-sm">
                     </div>
- <!-- NEW CODE -->
-<div class="md:col-span-2">
-    <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Description</label>
-    <textarea id="pay-desc" placeholder="Consultation details, subscription logs..." required rows="4" class="w-full p-2 border border-gray-300 rounded-lg text-sm resize-y"></textarea>
-</div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Description</label>
+                        <textarea id="pay-desc" placeholder="Consultation details, subscription logs..." required rows="4" class="w-full p-2 border border-gray-300 rounded-lg text-sm resize-y"></textarea>
+                    </div>
                     <div class="md:col-span-3 flex justify-end gap-2">
                         <button type="button" id="cancel-pay-edit-btn" onclick="resetPaymentForm()" class="hidden bg-gray-100 text-gray-600 py-2 px-4 rounded-lg font-medium hover:bg-gray-200 transition text-sm">Cancel Edit</button>
                         <button type="submit" id="save-pay-btn" class="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-blue-700 transition text-sm">Save Payment</button>
@@ -102,7 +99,6 @@
             </div>
         </section>
 
-        <!-- ADVANCED SEARCH TAB -->
         <section id="adv-search-tab" class="tab-content space-y-6">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <h2 class="text-xl font-bold mb-4 text-gray-700">Advanced Visit Search</h2>
@@ -172,7 +168,6 @@
             </div>
         </section>
 
-        <!-- BACKUP TAB -->
         <section id="backup-tab" class="tab-content">
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 max-w-xl mx-auto space-y-6">
                 <h2 class="text-xl font-bold text-gray-700">Database Backup & Recovery</h2>
@@ -195,7 +190,6 @@
         </section>
     </main>
 
-    <!-- PATIENT MODAL -->
     <div id="patient-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
@@ -210,8 +204,8 @@
                     <input type="text" id="p-name" required class="w-full p-2 border border-gray-300 rounded-lg">
                 </div>
                 <div>
-                    <label class="block font-medium text-gray-600 mb-1">Birthday *</label>
-                    <input type="date" id="p-birthday" required class="w-full p-2 border border-gray-300 rounded-lg">
+                    <label class="block font-medium text-gray-600 mb-1">Birthday (DD-MM-YYYY) *</label>
+                    <input type="text" id="p-birthday" inputmode="numeric" required placeholder="DD-MM-YYYY" maxlength="10" oninput="formatDateInput(this)" class="w-full p-2 border border-gray-300 rounded-lg">
                 </div>
                 <div>
                     <label class="block font-medium text-gray-600 mb-1">Sex</label>
@@ -241,6 +235,35 @@
                     <label class="block font-medium text-gray-600 mb-1">Other Notes</label>
                     <textarea id="p-other" rows="2" class="w-full p-2 border border-gray-300 rounded-lg"></textarea>
                 </div>
+
+                <div id="fast-visit-section" class="sm:col-span-2 bg-green-50/50 p-4 rounded-xl border border-green-200/60 space-y-3 mt-2">
+                    <h4 class="font-bold text-green-800 text-xs uppercase tracking-wider flex items-center gap-1">
+                        <span>📅</span> Add Initial Visit Record (Optional)
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Visit Date</label>
+                            <input type="date" id="p-v-date" class="w-full p-2 border border-gray-300 rounded-lg bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Illness Summary</label>
+                            <input type="text" id="p-v-illness-text" placeholder="Short description..." class="w-full p-2 border border-gray-300 rounded-lg bg-white">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Diagnosis</label>
+                        <textarea id="p-v-diagnosis" rows="1" class="w-full p-2 border border-gray-300 rounded-lg bg-white"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Medicament Rx</label>
+                        <textarea id="p-v-medicament" rows="1" class="w-full p-2 border border-gray-300 rounded-lg bg-white"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Full Details / Notice</label>
+                        <textarea id="p-v-story" rows="1" class="w-full p-2 border border-gray-300 rounded-lg bg-white"></textarea>
+                    </div>
+                </div>
+
                 <div class="sm:col-span-2 flex justify-end gap-2 pt-2 border-t">
                     <button type="button" onclick="closePatientModal()" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition">Cancel</button>
                     <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition">Save Profile</button>
@@ -249,7 +272,6 @@
         </div>
     </div>
 
-    <!-- VISIT MODAL -->
     <div id="visit-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
@@ -323,6 +345,18 @@
             }
         };
 
+        // UPDATED AUTO-FORMATTER TO HANDLE THE DD-MM-YYYY SEQUENCE NATURALLY
+        function formatDateInput(input) {
+            let value = input.value.replace(/\D/g, ''); // Strip non-digits
+            
+            if (value.length > 2 && value.length <= 4) {
+                value = value.slice(0, 2) + '-' + value.slice(2);
+            } else if (value.length > 4) {
+                value = value.slice(0, 2) + '-' + value.slice(2, 4) + '-' + value.slice(4, 8);
+            }
+            input.value = value;
+        }
+
         function updateGlobalDashboardStats() {
             if(!db) return;
             const transaction = db.transaction(["patients", "visits"], "readonly");
@@ -365,6 +399,8 @@
         // --- PATIENT MANAGEMENT ---
         function openPatientModal(patient = null) {
             document.getElementById('patient-form').reset();
+            const visitSection = document.getElementById('fast-visit-section');
+            
             if(patient) {
                 document.getElementById('patient-modal-title').innerText = "Edit Patient Profile";
                 document.getElementById('p-id').value = patient.patient_id;
@@ -377,10 +413,15 @@
                 document.getElementById('p-address').value = patient.address || '';
                 document.getElementById('p-story').value = patient.story || '';
                 document.getElementById('p-other').value = patient.other || '';
+                
+                if (visitSection) visitSection.classList.add('hidden');
             } else {
                 document.getElementById('patient-modal-title').innerText = "Add New Patient";
                 document.getElementById('p-id').value = "";
                 document.getElementById('p-insert-date').value = new Date().toISOString().split('T')[0];
+                
+                if (visitSection) visitSection.classList.remove('hidden');
+                document.getElementById('p-v-date').value = new Date().toISOString().split('T')[0];
             }
             document.getElementById('patient-modal').classList.remove('hidden');
         }
@@ -390,9 +431,17 @@
         function savePatient(e) {
             e.preventDefault();
             const id = document.getElementById('p-id').value;
+            const birthdayValue = document.getElementById('p-birthday').value;
+
+            // Enforce full character matching length check
+            if(birthdayValue.length < 10) {
+                alert("Please match the full DD-MM-YYYY pattern for the birthday.");
+                return;
+            }
+
             const patientData = {
                 name: document.getElementById('p-name').value,
-                birthday: document.getElementById('p-birthday').value,
+                birthday: birthdayValue,
                 sex: document.getElementById('p-sex').value,
                 FamilySituation: document.getElementById('p-family').value,
                 phone: document.getElementById('p-phone').value,
@@ -402,11 +451,37 @@
                 insert_date: document.getElementById('p-insert-date').value
             };
 
-            if(id) patientData.patient_id = parseInt(id);
+            const isNewPatient = !id;
+            if(!isNewPatient) patientData.patient_id = parseInt(id);
 
-            const transaction = db.transaction(["patients"], "readwrite");
-            const store = transaction.objectStore("patients");
-            store.put(patientData);
+            const transaction = db.transaction(["patients", "visits"], "readwrite");
+            const patientStore = transaction.objectStore("patients");
+            const visitStore = transaction.objectStore("visits");
+
+            const saveReq = patientStore.put(patientData);
+
+            saveReq.onsuccess = (event) => {
+                const finalPatientId = isNewPatient ? event.target.result : patientData.patient_id;
+                
+                const fastVisitDate = document.getElementById('p-v-date').value;
+                const fastVisitIllness = document.getElementById('p-v-illness-text').value;
+                const fastVisitDiag = document.getElementById('p-v-diagnosis').value;
+                const fastVisitMed = document.getElementById('p-v-medicament').value;
+                const fastVisitStory = document.getElementById('p-v-story').value;
+
+                if (isNewPatient && (fastVisitIllness || fastVisitDiag || fastVisitMed || fastVisitStory)) {
+                    const linkedVisitData = {
+                        patient_id: parseInt(finalPatientId),
+                        date: fastVisitDate || new Date().toISOString().split('T')[0],
+                        IllnessIsText: fastVisitIllness,
+                        diagnosis: fastVisitDiag,
+                        medicament: fastVisitMed,
+                        IllnessStory: fastVisitStory,
+                        Notice: ""
+                    };
+                    visitStore.put(linkedVisitData);
+                }
+            };
 
             transaction.oncomplete = () => {
                 closePatientModal();
@@ -467,7 +542,6 @@
                     }
                     cursor.continue();
                 } else {
-                    // Sort matched profiles: newest first (by registration details)
                     matchingPatients.sort((a, b) => {
                         const dateA = new Date(a.insert_date || 0);
                         const dateB = new Date(b.insert_date || 0);
@@ -475,7 +549,6 @@
                         return b.patient_id - a.patient_id; 
                     });
 
-                    // Render elements in order
                     matchingPatients.forEach(p => {
                         const index = visitStore.index("patient_id");
                         const visitReq = index.getAll(p.patient_id);
@@ -780,7 +853,6 @@
                         if (fAddress && !matchedPatient.address?.toLowerCase().includes(fAddress)) return false;
                         if (fSex && matchedPatient.sex !== fSex) return false;
                         
-                        // Date Range Filter logic
                         if (fFromDate && v.date < fFromDate) return false;
                         if (fToDate && v.date > fToDate) return false;
                         
